@@ -1,0 +1,9 @@
+COMBINADOSCHILE - ACTUALIZACION DEL CATALOGO
+
+Archivos incluidos: index.html y admin.html.
+
+Para publicar: en GitHub abre el repositorio combinadoschile.github.io, elige Add file > Upload files, arrastra index.html y admin.html (y conserva los demas archivos existentes, como logo-combinadoschile.png), luego Commit changes. GitHub Pages actualizará la tienda.
+
+El catálogo inicial contiene seis productos y precios sugeridos en CLP. El despacho se cobra por separado y se confirma por WhatsApp.
+
+Nota: el panel admin.html guarda cambios solo en el navegador local; editar allí no actualiza automáticamente el catálogo público. Para modificar el catálogo público, actualiza los archivos y súbelos a GitHub.
