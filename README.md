@@ -1,2 +1,2 @@
 # combinadoschile.github.io
-Arrreglo florales
+Arreglos florales
