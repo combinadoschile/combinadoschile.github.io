@@ -1,0 +1,23 @@
+COMBINADOSCHILE - CONEXION CON GOOGLE SHEETS
+
+Archivo incluido: index.html
+
+IMPORTANTE:
+- Este index.html conserva el diseño, el logo referenciado como logo-combinadoschile.png, el carrito y los pedidos por WhatsApp.
+- El catálogo intenta leer automáticamente las columnas Producto, Descripción, Precio, Fotografía y Disponibilidad desde la hoja CSV publicada.
+- En Fotografía pega una URL pública directa de la imagen (por ejemplo, una imagen alojada públicamente). Si la celda está vacía, se muestra un emoji.
+- En Disponibilidad escribe Disponible o No disponible. También se reconocen Agotado y Sin stock.
+- Para precios, usa números como 19990 o 19.990.
+- No agregues datos privados ni información de clientes a la hoja publicada.
+
+PARA ACTUALIZAR GITHUB PAGES:
+1. Entra a https://github.com/combinadoschile/combinadoschile.github.io
+2. Abre el archivo index.html.
+3. Pulsa el lápiz (Edit this file) o usa Add file > Upload files para subir el nuevo index.html y reemplazar el anterior.
+4. Confirma el cambio con Commit changes.
+5. Espera un momento y revisa https://combinadoschile.github.io/ (puede ser necesario recargar con Ctrl+F5).
+
+NO reemplaces ni elimines logo-combinadoschile.png ni admin.html.
+
+NOTA:
+La conexión se considera activa cuando el nuevo index.html esté publicado y el estado del catálogo diga “Catálogo actualizado desde Google Sheets”. Si aparece el mensaje de catálogo de respaldo, revisa que la hoja siga publicada como CSV y que los encabezados sean exactamente los indicados. El navegador puede bloquear la lectura si Google no permite la solicitud desde GitHub Pages; en ese caso necesitaremos otra vía de publicación.
