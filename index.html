@@ -58,8 +58,40 @@ const BREAKFAST_PRODUCTS=[
 let products=[...DEFAULT_PRODUCTS,...BREAKFAST_PRODUCTS];
 function parseCSV(text){const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(c==='"'&&quoted&&n==='"'){field+='"';i++}else if(c==='"'){quoted=!quoted}else if(c===','&&!quoted){row.push(field);field=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&n==='\n')i++;row.push(field);if(row.some(v=>v.trim()))rows.push(row);row=[];field=''}else field+=c}row.push(field);if(row.some(v=>v.trim()))rows.push(row);return rows}
 function normalizeHeader(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase()}
-function parseProducts(csv){const rows=parseCSV(csv);if(rows.length<2)throw new Error('La hoja no contiene productos.');const headers=rows[0].map(normalizeHeader);const col=(...names)=>headers.findIndex(h=>names.includes(h));const ix={name:col('producto'),description:col('descripcion'),price:col('precio'),image:col('fotografia','foto','imagen'),availability:col('disponibilidad')};if(Object.values(ix).some(v=>v<0))throw new Error('Revisa los títulos de las cinco columnas de la hoja.');return rows.slice(1).map((r,i)=>{const name=(r[ix.name]||'').trim();if(!name)return null;const rawPrice=(r[ix.price]||'').replace(/[^0-9,.-]/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.');const price=Number(rawPrice)||0;const status=normalizeHeader(r[ix.availability]||'disponible');const available=!['no','no disponible','agotado','sin stock','false','0'].includes(status);return{id:'sheet-'+i+'-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-'),name,description:(r[ix.description]||'').trim(),price,image:(r[ix.image]||'').trim(),available,tag:'Hecho con cariño',category:'flores'}}).filter(Boolean)}
-function getProducts(){return products}
+function parseProducts(csv){
+ const rows=parseCSV(csv);
+ if(rows.length<2)throw new Error('La hoja no contiene productos.');
+ const headers=rows[0].map(normalizeHeader);
+ const col=(...names)=>headers.findIndex(h=>names.includes(h));
+ const ix={
+  category:col('categoria'),
+  name:col('producto'),
+  description:col('descripcion'),
+  price:col('precio'),
+  image:col('fotografia','foto','imagen'),
+  availability:col('disponibilidad')
+ };
+ if(Object.values(ix).some(v=>v<0))throw new Error('Revisa los títulos de las seis columnas.');
+ return rows.slice(1).map((r,i)=>{
+  const name=(r[ix.name]||'').trim();
+  if(!name)return null;
+  const rawPrice=(r[ix.price]||'').replace(/[^0-9,.-]/g,'').replace(/\.(?=\d{3}(?:\D|$))/g,'').replace(',','.');
+  const price=Number(rawPrice)||0;
+  const status=normalizeHeader(r[ix.availability]||'disponible');
+  const category=normalizeHeader(r[ix.category]||'flores').includes('desayun')?'desayunos':'flores';
+  const available=!['no','no disponible','agotado','sin stock','false','0'].includes(status);
+  return {
+   id:'sheet-'+i+'-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-'),
+   name,
+   description:(r[ix.description]||'').trim(),
+   price,
+   image:(r[ix.image]||'').trim(),
+   available,
+   tag:'Hecho con cariño',
+   category
+  };
+ }).filter(Boolean);
+}function getProducts(){return products}
 let cart={};function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function money(value){return Number(value)>0?'$'+Number(value).toLocaleString('es-CL'):'Consultar precio'}
 function renderGroup(category,elementId){const el=document.getElementById(elementId);const shown=getProducts().filter(p=>p.category===category);el.innerHTML=shown.map(p=>`<article class="product" role="button" tabindex="0" aria-label="Ver ${escapeHtml(p.name)}" onclick="openProduct('${escapeHtml(p.id)}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openProduct('${escapeHtml(p.id)}')}"><div class="product-art">${p.image?`<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">`:escapeHtml(category==='flores'?'💐':'🎁')}</div><div class="product-info"><div class="tag">${p.available?'Disponible':'Agotado temporalmente'}</div><h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.description||'Un detalle preparado con cariño.')}</p><div class="price">${money(p.price)}</div><button class="btn" type="button" onclick="event.stopPropagation();openProduct('${escapeHtml(p.id)}')">Ver producto</button></div></article>`).join('')||'<p class="intro">Pronto tendremos nuevos productos. Escríbenos por WhatsApp.</p>'}
