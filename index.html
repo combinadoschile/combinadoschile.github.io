@@ -47,14 +47,7 @@ const DEFAULT_PRODUCTS=[
 {id:'elegancia',name:'Elegancia',description:'Caja floral con una presentación especial.',price:39990,image:'',available:true,tag:'Presentación especial',category:'flores'},
 {id:'amor-eterno',name:'Amor Eterno',description:'Ramo premium de flores mixtas.',price:49990,image:'',available:true,tag:'Un regalo inolvidable',category:'flores'}
 ];
-const BREAKFAST_PRODUCTS=[
-{id:'buenos-dias',name:'Buenos Días',description:'Café, jugo, sándwich y galletas.',price:14990,image:'desayuno-buenos-dias.jpg',available:true,tag:'Un comienzo delicioso',category:'desayunos'},
-{id:'dulce-despertar',name:'Dulce Despertar',description:'Croissants, frutas, jugo y chocolates.',price:19990,image:'desayuno-dulce-despertar.jpg',available:true,tag:'Dulce y especial',category:'desayunos'},
-{id:'manana-especial',name:'Mañana Especial',description:'Sándwich, café, pastelito, fruta y jugo.',price:24990,image:'desayuno-manana-especial.jpg',available:true,tag:'Para sorprender',category:'desayunos'},
-{id:'feliz-cumpleanos',name:'Feliz Cumpleaños',description:'Desayuno completo, chocolates y decoración de cumpleaños.',price:29990,image:'desayuno-feliz-cumpleanos.jpg',available:true,tag:'Celebra desde temprano',category:'desayunos'},
-{id:'amor-gourmet',name:'Amor Gourmet',description:'Desayuno premium, frutas, dulces y flores.',price:34990,image:'desayuno-amor-gourmet.jpg',available:true,tag:'Un detalle premium',category:'desayunos'},
-{id:'desayuno-para-dos',name:'Desayuno para Dos',description:'Dos cafés, dos sándwiches, frutas, jugos y dulces.',price:39990,image:'desayuno-para-dos.jpg',available:true,tag:'Para compartir',category:'desayunos'}
-];
+const BREAKFAST_PRODUCTS=[];
 let products=[...DEFAULT_PRODUCTS,...BREAKFAST_PRODUCTS];
 function parseCSV(text){const rows=[];let row=[],field='',quoted=false;for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];if(c==='"'&&quoted&&n==='"'){field+='"';i++}else if(c==='"'){quoted=!quoted}else if(c===','&&!quoted){row.push(field);field=''}else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&n==='\n')i++;row.push(field);if(row.some(v=>v.trim()))rows.push(row);row=[];field=''}else field+=c}row.push(field);if(row.some(v=>v.trim()))rows.push(row);return rows}
 function normalizeHeader(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase()}
